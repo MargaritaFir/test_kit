@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &_logo {
+    font-size: 6.85rem;
+    text-transform: uppercase;
+  }
+
+  &_text {
+    display: flex;
+    flex-direction: column;
+    &-item {
+      font-weight: 300;
+      font-size: 1.4rem;
+      line-height: 1.7rem;
+    }
+  }
+}
