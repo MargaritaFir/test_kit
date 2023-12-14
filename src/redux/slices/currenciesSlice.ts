@@ -45,9 +45,7 @@ export const currenciesSlice = createSlice({
   },
 });
 
-export const currencies = (state: RootState) => state.currencies.currencies;
-export const selectedCurrancy = (state: RootState) =>
-  state.currencies.selectedCurrancy;
+export const currenciesStore = (state: RootState) => state.currencies;
 
 export const { selectCurrency } = currenciesSlice.actions;
 export default currenciesSlice.reducer;

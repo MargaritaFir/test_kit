@@ -2,8 +2,12 @@ import React, { memo, useEffect, useMemo } from "react";
 import kitten from "../../assets/images/Kitten.png";
 import "./index.scss";
 
-import { RootState, useAppDispatch, useAppSelector } from "redux/store";
-import { getCurrencies, selectCurrency } from "redux/slices/currenciesSlice";
+import { useAppDispatch, useAppSelector } from "redux/store";
+import {
+  currenciesStore,
+  getCurrencies,
+  selectCurrency,
+} from "redux/slices/currenciesSlice";
 import {
   transformCurrenciesToSelectOption,
   transformCurrencyToSelectOption,
@@ -13,18 +17,15 @@ import Select, { ISelectOption } from "components/select";
 
 const CurrenciesWidget = () => {
   const dispatch = useAppDispatch();
-  const { currencies, selectedCurrancy, isLoading } = useAppSelector(
-    ({ currencies }: RootState) => ({
-      ...currencies,
-    })
-  );
+  const curranciesData = useAppSelector(currenciesStore);
+
   useEffect(() => {
     dispatch(getCurrencies());
   }, [dispatch]);
 
   const selectorCurrenciesData = useMemo(
-    () => transformCurrenciesToSelectOption(currencies),
-    [currencies]
+    () => transformCurrenciesToSelectOption(curranciesData.currencies),
+    [curranciesData.currencies]
   );
 
   return (
@@ -36,22 +37,25 @@ const CurrenciesWidget = () => {
           className="currenciesWidget_selectedField_selector"
           options={selectorCurrenciesData}
           selectedOption={
-            currencies.length
+            curranciesData.currencies.length
               ? transformCurrencyToSelectOption(
-                  selectedCurrancy ?? currencies[0]
+                  curranciesData.selectedCurrancy ??
+                    curranciesData.currencies[0]
                 )
               : undefined
           }
-          isLoading={isLoading}
+          isLoading={curranciesData.isLoading}
           onSelect={(item: ISelectOption) => {
             dispatch(selectCurrency(item.value));
           }}
         />
       </div>
 
-      <div className="currenciesWidget_fullName">{selectedCurrancy?.name}</div>
+      <div className="currenciesWidget_fullName">
+        {curranciesData.selectedCurrancy?.name}
+      </div>
       <div className="currenciesWidget_kittenImage">
-        <img src={kitten} alt="" />
+        <img src={kitten} alt="kitten" />
       </div>
     </div>
   );
